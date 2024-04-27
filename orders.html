@@ -212,21 +212,7 @@ li {
       }
     }
 
-    function calculateTotal() {
-      const price = parseFloat(document.getElementById('price').value);
-      const quantity = parseInt(document.getElementById('quantity').value);
-      const discount = parseFloat(document.getElementById('discount').value);
-      let totalUSD = price * quantity * (1 - (discount / 100));
-      const coupon = document.getElementById('coupon').value;
-      if (coupon === "SAVE10") { // Example coupon code
-        totalUSD *= 0.9; // Apply an additional 10% discount
-      }
-      if (coupon === "KISAAN30") { // Example coupon code
-        totalUSD *= 0.29; // Apply an additional 30% discount
-      }
-      const totalINR = totalUSD * 75; // Example conversion rate from USD to INR
-      document.getElementById('total').value = "$" + totalUSD.toFixed(2) + " / ₹" + totalINR.toFixed(2);
-    }
+
   </script>
 </body>
 </html>
