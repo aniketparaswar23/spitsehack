@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adding Crops</title>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-image: url('./img/fruits_bg.jpg'); /* Add your background image URL here */
+      background-size: cover;
+      background-position: center;
+      color: #333;
+    }
+    .order-form-container {
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      border: #bae6c4;
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto; /* Center the container horizontally */
+    }
+    .order-form-left, .order-form-right {
+      padding: 20px;
+      flex: 1;
+    }
+    .order-form-left {
+      border-right: 1px solid #ccc;
+    }
+    .order-form-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-weight: bold;
+      display: block;
+    }
+    .form-control, .form-control-large {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .form-control-large {
+      resize: none; 
+      height: 150px; 
+    }
+    .btn-primary {
+      color: #fff;
+      background-color: #87A922;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .btn-primary:hover {
+      background-color: #698B22;
+    }
+  </style>
+</head>
+<body>
+  <div class="order-form-container">
+    <div class="order-form-left">
+      <h1>Add Your Crops</h1>
+      <form class="order-form" action="order_send.php" method="POST">
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select name="category" id="category" class="form-control" onchange="updateItemsDropdown()">
+            <option value="">-- Select Category --</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="fruits">Fruits</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="items">Items:</label>
+          <select name="items" id="items" class="form-control">
+            <!-- Options will be added here based on JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="harvest_date">Harvest Date:</label>
+          <input type="date" name="harvest_date" id="harvest_date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity:</label>
+          <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1">
+        </div>
+        <div class="form-group">
+          <label for="price">Price per Unit ($):</label>
+          <input type="number" name="price" id="price" class="form-control" min="0.01" step="0.01" value="1.00">
+        </div>
+      </div>
+      <div class="order-form-right">
+        <div class="form-group">
+          <label for="coupon">Discount Coupon Code:</label>
+          <input type="text" name="coupon" id="coupon" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="discount">Discount (%):</label>
+          <input type="number" name="discount" id="discount" class="form-control" min="0" max="100" value="0">
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea name="description" id="description" class="form-control form-control-large" placeholder="Enter detailed description (optional)"></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Add to the Catalogue</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function updateItemsDropdown() {
+      const category = document.getElementById('category').value;
+      const items = document.getElementById('items');
+      items.innerHTML = '';
+      if (category === 'vegetables') {
+        const vegetables = ['Carrot', 'Broccoli', 'Spinach'];
+        vegetables.forEach(veg => {
+          const option = new Option(veg, veg);
+          items.appendChild(option);
+        });
+      } else if (category === 'fruits') {
+        const fruits = ['Apple', 'Banana', 'Cherry'];
+        fruits.forEach(fruit => {
+          const option = new Option(fruit, fruit);
+          items.appendChild(option);
+        });
+      }
+    }
+
+    function calculateTotal() {
+      const price = parseFloat(document.getElementById('price').value);
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const discount = parseFloat(document.getElementById('discount').value);
+      let totalUSD = price * quantity * (1 - (discount / 100));
+      const coupon = document.getElementById('coupon').value;
+      if (coupon === "SAVE10") { // Example coupon code
+        totalUSD *= 0.9; // Apply an additional 10% discount
+      }
+      if (coupon === "KISAAN30") { // Example coupon code
+        totalUSD *= 0.29; // Apply an additional 30% discount
+      }
+      const totalINR = totalUSD * 75; // Example conversion rate from USD to INR
+      document.getElementById('total').value = "$" + totalUSD.toFixed(2) + " / ₹" + totalINR.toFixed(2);
+    }
+  </script>
+</body>
+</html>
