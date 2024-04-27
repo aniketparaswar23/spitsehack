@@ -29,8 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows == 1) {
             // User found, set user details to session
             $row = $result->fetch_assoc();
-            $_SESSION['user_details'] = $row;
-            echo($_SESSION);
+            $_SESSION['user_details'] = $row['mobile'];
             echo "<style>
             .success-alert-box {
                 background-color: #d4edda;
